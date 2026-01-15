@@ -14,12 +14,19 @@ describe("testando login",()=>{
     });
 
     it("deve chamar o alerta com a mensagem correta", () => {
-        login();
+        login("da@gmail.com", "123456");
         
         // Verificamos se foi chamado
         expect(mockAlert).toHaveBeenCalled();
         
         // Verifique se a mensagem enviada foi a correta
-        expect(mockAlert).toHaveBeenCalledWith("Bem vindo ao sistema");
+        expect(mockAlert).toHaveBeenCalledWith("Bem vindo ao sistema\nSeu email:da@gmail.com\nSua senha: 123456");
     });
+
+    it("nao deve exibir a mensagem de boas vindas sem email e senha", () => {
+        login("da@gmail.com", "123456");
+        
+        // Verificamos se foi chamado
+        expect(mockAlert).not.toHaveBeenCalledWith("Bem vindo ao sistema");
+    })
 })
