@@ -3,6 +3,7 @@ const conta = {
   senha: '123456',
   name: 'Daniel Mattos',
   saldo: 100,
+  id: "1",
 };
 
 export const api = new Promise((resolve) => {
