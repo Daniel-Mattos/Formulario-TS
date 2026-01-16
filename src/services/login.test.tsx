@@ -1,42 +1,43 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
-import login from "./login";
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import login from './login';
 
-describe("testando login",()=>{
+describe('testando login', () => {
+  // Criamos o mock fora para ter acesso a ele
+  const mockAlert = vi.fn();
 
-    // Criamos o mock fora para ter acesso a ele
-    const mockAlert = vi.fn();
+  beforeEach(() => {
+    // Substituímos o alert global pelo nosso mock antes de cada teste
+    vi.stubGlobal('alert', mockAlert);
+    // Limpamos o histórico do mock para um teste não afetar o outro
+    mockAlert.mockClear();
+  });
 
-    beforeEach(() => {
-        // Substituímos o alert global pelo nosso mock antes de cada teste
-        vi.stubGlobal('alert', mockAlert);
-        // Limpamos o histórico do mock para um teste não afetar o outro
-        mockAlert.mockClear();
-    });
+  it('deve chamar o alerta com a mensagem correta', async () => {
+    await login('da@gmail.com', '123456');
 
-    it("deve chamar o alerta com a mensagem correta", async() => {
-        await login("da@gmail.com", "123456");
-        
-        // Verificamos se foi chamado
-        expect(mockAlert).toHaveBeenCalled();
-        
-        // Verifique se a mensagem enviada foi a correta
-        expect(mockAlert).toHaveBeenCalledWith("Bem vindo ao sistema\nSeu email:da@gmail.com\nSua senha: 123456");
-    });
+    // Verificamos se foi chamado
+    expect(mockAlert).toHaveBeenCalled();
 
-    it("nao deve exibir a mensagem de boas vindas sem email e senha", async() => {
-        await login("da@gmail.com", "123456");
-        
-        // Verificamos se foi chamado
-        expect(mockAlert).not.toHaveBeenCalledWith("Bem vindo ao sistema");
-    })
+    // Verifique se a mensagem enviada foi a correta
+    expect(mockAlert).toHaveBeenCalledWith(
+      'Bem vindo ao sistema\nSeu email:da@gmail.com\nSua senha: 123456',
+    );
+  });
 
-    it("Deve exibir um erro caso o email seja invalido", async () => {   
-        await login("maria@gmail.com", "123456");
-        
-        // Verificamos se foi chamado
-        expect(mockAlert).toHaveBeenCalled();
-        
-        // Verifique se a mensagem enviada foi a correta
-        expect(mockAlert).toHaveBeenCalledWith("Email inválido");
-    })
-})
+  it('nao deve exibir a mensagem de boas vindas sem email e senha', async () => {
+    await login('da@gmail.com', '123456');
+
+    // Verificamos se foi chamado
+    expect(mockAlert).not.toHaveBeenCalledWith('Bem vindo ao sistema');
+  });
+
+  it('Deve exibir um erro caso o email seja invalido', async () => {
+    await login('maria@gmail.com', '123456');
+
+    // Verificamos se foi chamado
+    expect(mockAlert).toHaveBeenCalled();
+
+    // Verifique se a mensagem enviada foi a correta
+    expect(mockAlert).toHaveBeenCalledWith('Email inválido');
+  });
+});
