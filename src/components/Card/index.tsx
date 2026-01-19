@@ -1,15 +1,17 @@
-import login from '@/services/login';
 import { useState } from 'react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 
-const Card = () => {
+const Card = ({ onSubmit }: any) => {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
 
   return (
     <form
-      onSubmit={() => login(email, senha)}
+      onSubmit={(e) => {
+        e.preventDefault();
+        onSubmit({ email, senha });
+      }}
       className="flex flex-col max-w-lg bg-violet-300 p-4 rounded-xl"
     >
       <h2 className="text-2xl font-bold mb-4">Faça seu login</h2>

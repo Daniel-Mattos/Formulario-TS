@@ -1,17 +1,16 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
+import { AppContextProvider } from './context/AppContext';
 import Layout from './layouts';
-import Conta from './pages/Conta';
-import Home from './pages/Home';
+import MainRoutes from './routes/routes';
 
 function App() {
   return (
     <BrowserRouter>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/conta/:id" element={<Conta />} />
-        </Routes>
-      </Layout>
+      <AppContextProvider>
+        <Layout>
+          <MainRoutes />
+        </Layout>
+      </AppContextProvider>
     </BrowserRouter>
   );
 }

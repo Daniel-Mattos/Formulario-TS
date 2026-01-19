@@ -1,11 +1,14 @@
 import { api } from '@/api';
 
-const login = async (email: string, senha: string): Promise<void> => {
-  const data: any = await api;
-  if (email !== data.email) {
-    return alert('Email inválido');
+const login = async (email: string, senha: string): Promise<boolean> => {
+ 
+  // biome-ignore lint/suspicious/noExplicitAny: <ignora por enquanto>
+   const data: any = await api;
+  if (email !== data.email || senha !== data.senha) {
+    return false;
   }
-  alert(`Bem vindo ao sistema\nSeu email:${email}\nSua senha: ${senha}`);
+
+  return true;
 };
 
 export default login;

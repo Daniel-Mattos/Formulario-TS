@@ -1,7 +1,8 @@
 import { api } from '@/api';
 import InfoCard from '@/components/InfoCard';
 import { Loader } from '@/components/ui/loader';
-import { useEffect, useState } from 'react';
+import { AppContext } from '@/context/AppContext';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 interface IUser {
@@ -11,10 +12,15 @@ interface IUser {
   saldo: number;
   id: string;
 }
-const conta = () => {
+const Conta = () => {
   const navigate = useNavigate();
-  const params = useParams()
+  const params = useParams();
   const [user, setUser] = useState<null | IUser>();
+  const { isLoggedIn } = useContext(AppContext);
+
+  useEffect(() => {
+    !isLoggedIn && navigate('/');
+  }, [isLoggedIn, navigate]);
 
   useEffect(() => {
     const getData = async () => {
@@ -24,10 +30,12 @@ const conta = () => {
 
     getData();
   }, []);
-  
-  if(user && params.id !== user.id){
-    navigate("/")
-  }
+
+  useEffect(() => {
+    if (user && params.id !== user.id) {
+      navigate('/');
+    }
+  }, [user, params.id, navigate]);
 
   const atualData = new Date();
   const dia = atualData.getDate();
@@ -39,14 +47,20 @@ const conta = () => {
   return (
     <div className="flex flex-row gap-4">
       {!user ? (
-        <Loader text='Carrengado dados...'/>
+        <Loader text="Carrengado dados..." />
       ) : (
-       <>
-        <InfoCard mainContent={`Bem vindo ${user?.name}`} secondaryContent={`${dia}/${mes}/${ano} ${hours}:${minutes}`}/>
-        <InfoCard mainContent={`Saldo`} secondaryContent={`R$ ${user?.saldo}`}/>
-       </>
+        <>
+          <InfoCard
+            mainContent={`Bem vindo ${user?.name}`}
+            secondaryContent={`${dia}/${mes}/${ano} ${hours}:${minutes}`}
+          />
+          <InfoCard
+            mainContent={`Saldo`}
+            secondaryContent={`R$ ${user?.saldo}`}
+          />
+        </>
       )}
     </div>
   );
 };
-export default conta;
+export default Conta;
