@@ -1,6 +1,7 @@
 import Card from '@/components/Card';
 import { AppContext } from '@/context/AppContext';
 import login from '@/services/login';
+import { changeLocalStorage } from '@/services/storage';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -20,6 +21,7 @@ const Home = () => {
     }
 
     setIsLoggedIn(loggedIn);
+    changeLocalStorage({ login: loggedIn });
     navigate('/conta/1');
   };
 

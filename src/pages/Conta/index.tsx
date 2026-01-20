@@ -19,10 +19,6 @@ const Conta = () => {
   const { isLoggedIn } = useContext(AppContext);
 
   useEffect(() => {
-    !isLoggedIn && navigate('/');
-  }, [isLoggedIn, navigate]);
-
-  useEffect(() => {
     const getData = async () => {
       const data: any | IUser = await api;
       setUser(data);
@@ -32,10 +28,10 @@ const Conta = () => {
   }, []);
 
   useEffect(() => {
-    if (user && params.id !== user.id) {
+    if ((user && params.id !== user.id) || !isLoggedIn) {
       navigate('/');
     }
-  }, [user, params.id, navigate]);
+  }, [user, params.id, navigate, isLoggedIn]);
 
   const atualData = new Date();
   const dia = atualData.getDate();
